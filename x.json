@@ -1,0 +1,31 @@
+{
+	"message": "Network Error",
+	"name": "AxiosError",
+	"stack": "AxiosError: Network Error\n    at handleError (http://192.168.1.13:19000/node_modules\\axios\\lib\\adapters\\xhr.bundle?platform=android&hot=false&dev=true&minify=false&modulesOnly=true&runModule=false&shallow=true:120:39)\n    at call (native)\n    at dispatchEvent (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:31741:31)\n    at setReadyState (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:30363:33)\n    at __didCompleteResponse (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:30174:29)\n    at apply (native)\n    at anonymous (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:30299:52)\n    at apply (native)\n    at emit (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:2292:40)\n    at apply (native)\n    at __callFunction (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:2826:36)\n    at anonymous (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:2587:31)\n    at __guard (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:2777:15)\n    at callFunctionReturnFlushedQueue (http://192.168.1.13:19000/node_modules%5Cexpo%5CAppEntry.bundle?platform=android&dev=true&hot=false:2586:21)",
+	"config": {
+		"transitional": {
+			"silentJSONParsing": true,
+			"forcedJSONParsing": true,
+			"clarifyTimeoutError": false
+		},
+		"adapter": ["xhr", "http"],
+		"transformRequest": [null],
+		"transformResponse": [null],
+		"timeout": 0,
+		"xsrfCookieName": "XSRF-TOKEN",
+		"xsrfHeaderName": "X-XSRF-TOKEN",
+		"maxContentLength": -1,
+		"maxBodyLength": -1,
+		"env": {},
+		"headers": {
+			"Accept": "application/json, text/plain, */*",
+			"Content-Type": "application/json"
+		},
+		"baseURL": "http://localhost:8080/api/v1",
+		"method": "post",
+		"url": "/auth/login_mobile",
+		"data": "{\"email\":\"hamza@hamza.com\",\"password\":\"hamza1234\"}"
+	},
+	"code": "ERR_NETWORK",
+	"status": null
+}
