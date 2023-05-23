@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { createContext, useContext } from "react";
+import { Car } from "../interface/Car";
 
 interface AppContextType {
 	user?: {
@@ -10,9 +11,12 @@ interface AppContextType {
 		lastName:string
 	};
 	setUser: any;
+	car?:Car,
+	setCar?:any
 }
 const appContextDefaultValues: AppContextType = {
 	setUser: null,
+	
 };
 const AppContextSPS = createContext<AppContextType>(appContextDefaultValues);
 
@@ -26,8 +30,8 @@ export const useAppContext = () => {
 
 const AppContext = ({ children }: Props) => {
 	const [user, setUser] = React.useState<AppContextType["user"]>();
-
-	return <AppContextSPS.Provider value={{ user, setUser }}>{children}</AppContextSPS.Provider>;
+	const [car,setCar] = React.useState<AppContextType["car"]>();
+	return <AppContextSPS.Provider value={{ user, setUser,car,setCar }}>{children}</AppContextSPS.Provider>;
 };
 
 export default AppContext;

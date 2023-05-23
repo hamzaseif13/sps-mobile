@@ -16,7 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useMutation } from "react-query";
 import { registerCustomer } from "../api/customer";
 import { useAppContext } from "../context/AppContext";
-
+import * as SecureStore from "expo-secure-store";
 const Register = () => {
 	const [visible, setVisible] = React.useState(false);
 	const [registerMessage, setRegisterMessage] = React.useState("");
@@ -59,6 +59,7 @@ const Register = () => {
 			onToggleSnackBar();
 			setUser(res.data!);
 			setRegisterMessage("Register Successful");
+			await SecureStore.setItemAsync("user",JSON.stringify(res.data))
 		} else {
 			onToggleSnackBar();
 			setRegisterMessage(res.error!);
@@ -76,7 +77,7 @@ const Register = () => {
 					<Controller
 						control={control}
 						rules={{
-							required: true,
+							required: true,minLength:3
 						}}
 						render={({ field: { onChange, onBlur, value } }) => (
 							<TextInput
@@ -91,14 +92,14 @@ const Register = () => {
 						)}
 						name="firstName"
 					/>
-					{errors.firstName && <Text style={styles.error}>This Field is required.</Text>}
+					{errors.firstName && <Text style={styles.error}>this Field is Required and should be at least 3 characters.</Text>}
 
 					{/* last name  */}
 
 					<Controller
 						control={control}
 						rules={{
-							required: true,
+							required: true,minLength:3
 						}}
 						render={({ field: { onChange, onBlur, value } }) => (
 							<TextInput
@@ -113,7 +114,7 @@ const Register = () => {
 						)}
 						name="lastName"
 					/>
-					{errors.lastName && <Text style={styles.error}>This Field is required.</Text>}
+					{errors.lastName && <Text style={styles.error}>this Field is Required and should be at least 3 characters.</Text>}
 
 					{/* email  */}
 
@@ -139,14 +140,14 @@ const Register = () => {
 						)}
 						name="email"
 					/>
-					{errors.email && <Text style={styles.error}>{errors.email.message?.toString()!}</Text>}
+					{errors.email && <Text style={styles.error}>Please Enter a Valid Email</Text>}
 
 					{/* phone  */}
 
 					<Controller
 						control={control}
 						rules={{
-							required: true,
+							required: true,minLength:10
 						}}
 						render={({ field: { onChange, onBlur, value } }) => (
 							<TextInput
@@ -162,7 +163,7 @@ const Register = () => {
 						)}
 						name="phoneNumber"
 					/>
-					{errors.phoneNumber && <Text style={styles.error}>This Field is required.</Text>}
+					{errors.phoneNumber && <Text style={styles.error}>This Field is required and should be 10 digits at least.</Text>}
 
 					{/* password  */}
 

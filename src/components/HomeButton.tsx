@@ -23,7 +23,7 @@ export default HomeButton
 const styles = StyleSheet.create({
     button:{
         backgroundColor:"#D8D8D8",
-        width:"49%",
+        width:"48%",
         padding:10,
         textAlign:"center",
         borderRadius:10,display:"flex",

@@ -11,3 +11,9 @@ export interface Zone{
     startsAt:string
     endsAt:string
 }
+
+export interface Space{
+    id:number
+    number:number
+    state : "AVAILABLE" | "TAKEN" 
+}

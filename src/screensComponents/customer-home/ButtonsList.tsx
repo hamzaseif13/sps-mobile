@@ -7,7 +7,7 @@ import { Button } from "react-native-paper";
 const ButtonsList = () => {
 	return (
 		<View style={styles.buttonsContainer}>
-			<HomeButton title="Park Now" target="Map">
+			<HomeButton title="Map" target="Map">
 				<Entypo name="location-pin" size={60} color="#4169e1" />
 			</HomeButton>
 
@@ -15,12 +15,12 @@ const ButtonsList = () => {
 				<Entypo name="plus" size={60} color="#4169e1" />
 			</HomeButton>
 
-			<HomeButton title="Add Balance" target="AddBalance">
-				<FontAwesome name="money" size={60} color="#4169e1" />
+			<HomeButton title="Book Now" target="ScanQR">
+				<FontAwesome name="qrcode" size={60} color="#4169e1" />
 			</HomeButton>
 
 			<HomeButton title="History" target="History">
-            <MaterialIcons name="history" size={60} color="#4169e1" />
+            	<MaterialIcons name="history" size={60} color="#4169e1" />
 			</HomeButton>
 		</View>
 	);
@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
 		flexWrap: "wrap",
 		justifyContent: "space-between",
 		gap: 7,
-		marginTop: 10,
+		marginTop: 20,
 	},
 });

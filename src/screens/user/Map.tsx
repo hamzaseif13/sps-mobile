@@ -20,13 +20,17 @@ import { Zone } from "../../interface/Zone";
 
 import ParkingMarker from "../../screensComponents/customer-map/ParkingMarker";
 import { Button } from "react-native-paper";
-
+import { MaterialIcons } from "@expo/vector-icons";
 const LAT_DELTA = 0.015;
 const LONG_DELTA = 0.0121;
 const Map = () => {
 	const [zone, setZone] = useState<Zone | null>(null);
 
-	const { data, isLoading: zonesLoading } = useQuery({
+	const {
+		data,
+		isLoading: zonesLoading,
+		refetch,
+	} = useQuery({
 		queryKey: "zones",
 		queryFn: getAllZones,
 		enabled: true,
@@ -63,22 +67,30 @@ const Map = () => {
 		}
 		Location.getCurrentPositionAsync({}).then((location) => {
 			setLocation(location.coords);
-			/* mapRef.current.animateToRegion({
-				...location.coords,
+			mapRef.current.animateToRegion({
+				...location,
 				latitudeDelta: LAT_DELTA,
 				longitudeDelta: LONG_DELTA,
-			}); */
+			});
 		});
 	};
 	useEffect(() => {
 		getUserLocation();
+		refetch();
 	}, []);
-
+	function animateToCurrent() {
+		mapRef.current.animateToRegion({
+			...location,
+			latitudeDelta: LAT_DELTA,
+			longitudeDelta: LONG_DELTA,
+		});
+	}
 	return (
 		<View style={styles.container}>
 			<StatusBar backgroundColor="#003f5c" barStyle="light-content" />
 			<MapSearchBar />
 			<MapView
+				onPress={() => setZone(null)}
 				ref={mapRef}
 				style={styles.map}
 				provider={PROVIDER_GOOGLE}
@@ -88,6 +100,15 @@ const Map = () => {
 					longitudeDelta: LONG_DELTA,
 				}}
 			>
+				<Marker
+					anchor={{ x: 0.5, y: 0.5 }}
+					zIndex={1000}
+					coordinate={location} // replace with your user location coordinates
+				>
+					<View style={styles.marker}>
+						<View style={styles.circle} />
+					</View>
+				</Marker>
 				{zones.map((zone) => (
 					<Marker
 						key={zone.id}
@@ -107,6 +128,9 @@ const Map = () => {
 					</Marker>
 				))}
 			</MapView>
+			<TouchableOpacity onPress={animateToCurrent} style={styles.currentLocation}>
+				<MaterialIcons name="location-searching" size={24} color="black" />
+			</TouchableOpacity>
 			{zone && (
 				<View style={[styles.floatingSection]}>
 					<View style={styles.header}>
@@ -123,7 +147,7 @@ const Map = () => {
 							flexDirection: "row",
 							alignItems: "center",
 							justifyContent: "space-between",
-							marginTop:20
+							marginTop: 20,
 						}}
 					>
 						<View>
@@ -132,7 +156,12 @@ const Map = () => {
 								Available Spaces : {zone.availableSpaces}/{zone.numberOfSpaces}
 							</Text>
 						</View>
-						<Button buttonColor="#4169e1" mode="contained" onPress={()=>navigation.navigate("Confirm")}>
+						<Button
+							buttonColor="#4169e1"
+							mode="contained"
+							disabled={zone.availableSpaces === 0}
+							onPress={() => navigation.navigate("Confirm",zone.id)}
+						>
 							Confirm
 						</Button>
 					</View>
@@ -154,7 +183,6 @@ const styles = StyleSheet.create({
 	},
 	floatingSection: {
 		backgroundColor: "white",
-		borderWidth: 1,
 		position: "absolute",
 		bottom: 40,
 		width: "100%",
@@ -162,6 +190,11 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
 		padding: 20,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 3 },
+		shadowOpacity: 0.2,
+		shadowRadius: 3,
+		elevation: 3,
 	},
 	hide: {
 		display: "none",
@@ -190,5 +223,28 @@ const styles = StyleSheet.create({
 	},
 	avlSpaces: {
 		fontSize: 20,
+	},
+	marker: {
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	circle: {
+		width: 25,
+		height: 25,
+		borderRadius: 100,
+		backgroundColor: "#4169e1",
+	},
+	currentLocation: {
+		position: "absolute",
+		top: 100,
+		backgroundColor: "white",
+		width: 50,
+		height: 50,
+		borderRadius: 100,
+		justifyContent: "center",
+		alignItems: "center",
+		borderWidth: 1,
+		borderColor: "lightgrey",
+		right: 4,
 	},
 });

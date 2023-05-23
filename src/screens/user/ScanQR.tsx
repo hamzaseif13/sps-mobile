@@ -1,14 +1,69 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-
+import { StyleSheet, Text, View, Vibration } from "react-native";
+import React, { useState, useEffect } from "react";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import { ActivityIndicator, Button } from "react-native-paper";
+import CustomSafeAreaView from "../../components/CustomSafeAreaView";
+import LoadingScreen from "../LoadingScreen";
+import { useNavigation } from "@react-navigation/native";
 const ScanQR = () => {
-  return (
-    <View>
-      <Text>ScanQR</Text>
-    </View>
-  )
-}
+	const [hasPermission, setHasPermission] = useState<boolean>(false);
+	const [scanned, setScanned] = useState(false);
+	const [data, setData] = useState<string>("Not Scanned Yet");
+	const [loading, setLoading] = useState<boolean>(false);
+	const navigation = useNavigation<any>();
+	const getBarCodeScannerPermissions = async () => {
+		const { status } = await BarCodeScanner.requestPermissionsAsync();
+		setHasPermission(status === "granted");
+	};
+	useEffect(() => {
+		getBarCodeScannerPermissions();
+	}, []);
 
-export default ScanQR
+	if (hasPermission === false) {
+		return (
+			<View style={{ margin: 20 }}>
+				<Text style={{ fontSize: 20 }}>
+					This Feature Requires Camera Permission in able to Work probably, please go to settings
+					and give SPS app camera permeation.{" "}
+				</Text>
+				<Button
+					mode="contained"
+					style={{ borderRadius: 10, marginTop: 20 }}
+					onPress={getBarCodeScannerPermissions}
+					buttonColor="#4169e1"
+				>
+					Enable Camera
+				</Button>
+			</View>
+		);
+	}
+	const handleBarCodeScanned = ({ type, data }: any) => {
+		setLoading(true);
+		Vibration.vibrate(100);
+		setTimeout(() => {
+			navigation.navigate("Confirm",data);
+			setLoading(false);
+		}, 1000);
+	};
 
-const styles = StyleSheet.create({})
+	if (loading) {
+		return <LoadingScreen />;
+	}
+	return (
+		<CustomSafeAreaView>
+			<View style={{ marginHorizontal: 20, flex: 1, alignItems: "center" }}>
+				<BarCodeScanner onBarCodeScanned={handleBarCodeScanned} style={styles.camera} />
+				<Text>hi</Text>
+			</View>
+		</CustomSafeAreaView>
+	);
+};
+
+export default ScanQR;
+
+const styles = StyleSheet.create({
+	camera: {
+		width: "80%",
+		height: "50%",
+	},
+});

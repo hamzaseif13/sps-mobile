@@ -10,6 +10,15 @@ interface t{
 const Profile = () => {
   const {setUser} = useAppContext()
   const navigation = useNavigation<any>();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+     headerTitleAlign:"center",
+     headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 24,
+    }
+    });
+  }, [navigation]);
   const logout = async () => {
 		await SecureStore.deleteItemAsync("user");
 		setUser(null);
