@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useLayoutEffect, useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getZoneById } from "../../api/common";
 import LoadingScreen from "../LoadingScreen";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
@@ -22,7 +22,7 @@ const ConfirmSession = () => {
 	const [hours, setHours] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 	const [visible, setVisible] = React.useState(false);
-
+	const clientQuery = useQueryClient()
 	const openMenu = () => setVisible(true);
 
 	const closeMenu = () => setVisible(false);
@@ -82,6 +82,7 @@ const ConfirmSession = () => {
 				text1: "Success",
 				text2: "Session Created Successfully",
 			})
+			clientQuery.refetchQueries("zones")
 		}
 		else{
 			Toast.show({

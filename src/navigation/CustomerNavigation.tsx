@@ -15,6 +15,7 @@ import ConfirmSession from "../screens/user/ConfirmSession";
 import ScanQR from "../screens/user/ScanQR";
 import RedeemCard from "../screens/user/RedeemCard";
 import SelectCar from "../screens/user/SelectCar";
+import Cars from "../screens/user/Cars";
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -81,6 +82,18 @@ const StackNav = () => {
 					
 				})}
 				component={SelectCar}
+			/>
+			<stack.Screen
+				name="Cars"
+				options={({ navigation }) => ({
+					headerRight: () => (
+						<TouchableOpacity onPress={() => navigation.navigate("AddCar")}>
+							<Ionicons name="add" size={40} color="black" style={{ marginRight: 15 }} />
+						</TouchableOpacity>
+					),
+					
+				})}
+				component={Cars}
 			/>
 		</stack.Navigator>
 	);

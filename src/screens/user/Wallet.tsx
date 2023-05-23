@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from "react-na
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
+import { useQuery } from "react-query";
 
 const Wallet = () => {
 	const navigation = useNavigation<any>();
@@ -15,6 +16,13 @@ const Wallet = () => {
 			},
 		});
 	}, [navigation]);
+/*   const { data, isLoading, refetch } = useQuery(
+		"wallet",
+		(queryKey) => getZoneById(queryKey.queryKey[1]!),
+		{
+			enabled: true,
+		}
+	); */
 	return (
 		<CustomSafeAreaView>
 			<View style={styles.container}>
