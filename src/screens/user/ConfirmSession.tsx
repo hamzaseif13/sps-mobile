@@ -44,7 +44,7 @@ const ConfirmSession = () => {
 			enabled: true,
 		}
 	);
-
+		console.log(data?.data)
 
 	useEffect(() => {
 		const [zoneIdQr, spaceNumberQr] = route.params?.toString().split("-")!;
@@ -83,6 +83,10 @@ const ConfirmSession = () => {
 				text2: "Session Created Successfully",
 			})
 			clientQuery.refetchQueries("zones")
+			clientQuery.refetchQueries("wallet")
+			clientQuery.refetchQueries("history")
+			clientQuery.refetchQueries("recent-session")
+			setTimeout(()=>{navigation.goBack()},700)
 		}
 		else{
 			Toast.show({
@@ -92,7 +96,9 @@ const ConfirmSession = () => {
 			})
 		}
 	};
-
+	const getSpaceForDrop = ()=>{
+		return zone?.spaceList.filter((space)=>space.state==="AVAILABLE").sort((a,b)=>a.number-b.number).map((space)=>({label:space.number.toString(),value:space.number.toString()}))
+	}
 	return (
 		<CustomSafeAreaView>
 			<View style={styles.container}>
@@ -165,7 +171,7 @@ const ConfirmSession = () => {
 					value={spaceNumber}
 					inputSearchStyle={styles.inputSearchStyle}
 					iconStyle={styles.iconStyle}
-					data={generateArray(zone?.numberOfSpaces!)}
+					data={getSpaceForDrop()!}
 					search={false}
 					maxHeight={300}
 					labelField="label"

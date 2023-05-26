@@ -25,7 +25,7 @@ const SelectCar = () => {
 		<CustomSafeAreaView>
 			<ScrollView style={styles.container}>
 				<Text style={{ fontSize: 30, fontWeight: "bold" }}>Select Car</Text>
-				{cars?.reverse().map((car) => (
+				{cars?.length===0?<Text>No Cars</Text> :cars?.reverse().map((car) => (
 					<TouchableOpacity key={car.id} style={styles.car} onPress={() => selectCar(car)} >
 						<Text style={{ fontWeight: "bold", fontSize: 20 }}>
 							<Text>{car.brand} -</Text>

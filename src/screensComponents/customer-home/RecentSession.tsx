@@ -7,53 +7,73 @@ import useTimer from "../../hooks/useTimer";
 import Countdown from "react-countdown";
 import { useQuery } from "react-query";
 import { getLatestSession } from "../../api/customer";
+import { useNavigation } from "@react-navigation/native";
 const RecentSession = () => {
-	const { data, isLoading } = useQuery("recent-session", () => getLatestSession(),{enabled:false});
+	const { data, isLoading } = useQuery("recent-session", () => getLatestSession());
+	const navigation = useNavigation<any>();
+	const bookingSession = data?.data?.bookingSession;
+	const zone = data?.data?.zone;
 	if (isLoading)
 		return (
 			<View style={styles.container}>
 				<Text>Loading...</Text>
 			</View>
 		);
+	if (!bookingSession)
+		return (
+			<View style={styles.container}>
+				<Text>No Session Found</Text>
+			</View>
+		);
+	console.log(bookingSession);
 	return (
 		<View style={styles.container}>
-		
 			<View style={styles.idk}>
 				<Text style={styles.text}>Current Session</Text>
-				<Text>TC-101</Text>
+				<Text>{zone.tag}</Text>
 			</View>
 			<MapView
 				style={styles.map}
 				provider={PROVIDER_GOOGLE}
 				initialRegion={{
-					latitude: 37.78825,
-					longitude: -122.4324,
+					latitude: zone.lat,
+					longitude: zone.lng,
 					latitudeDelta: 0.015,
 					longitudeDelta: 0.0121,
 				}}
 			>
 				<Marker
-					coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+					coordinate={{ latitude: zone.lat, longitude: zone.lng }}
 					title="Marker Title"
 					description="Marker Description"
 				/>
 			</MapView>
 			<View style={styles.idk}>
 				<View style={{ display: "flex", gap: 4 }}>
-					<Text>Amman Third Circle</Text>
-					<Countdown
-						date={Date.now() + 500000}
-						renderer={({ hours, minutes, seconds, completed }) => (
-							<Text>
-								Time Left : {hours.toString().padStart(2, "0")}:
-								{minutes.toString().padStart(2, "0")}:{seconds.toString().padStart(2, "0")}{" "}
-							</Text>
-						)}
-					/>
+					<Text>{zone.title}</Text>
+					{bookingSession.state === "ACTIVE" && (
+						<Countdown
+							date={Date.now() + calculateMillisecondsRemaining(bookingSession.createdAt, bookingSession.duration)}
+							renderer={({ hours, minutes, seconds, completed }) => (
+								<Text>
+									Time Left : {hours.toString().padStart(2, "0")}:
+									{minutes.toString().padStart(2, "0")}:{seconds.toString().padStart(2, "0")}{" "}
+								</Text>
+							)}
+						/>
+					)}
+					{
+						bookingSession.state !== "ACTIVE" && <Text>Price : {getPrice(data?.data)}  {formatDuration(bookingSession.duration)} </Text>
+					}
 				</View>
-				<Button buttonColor="#4169e1" mode="contained" onPress={() => console.log("Pressed")}>
-					<AntDesign name="arrowright" size={24} color="white" />
-				</Button>
+				{bookingSession.state === "ACTIVE" &&<Button
+					buttonColor="#4169e1"
+					mode="contained"
+					onPress={() => navigation.navigate("Extend")}
+				>
+					<Text>Extend</Text>
+				</Button>}
+			
 			</View>
 		</View>
 	);
@@ -82,6 +102,31 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		marginVertical: 5,
-		alignItems: "center",
+		alignItems: "center",marginTop:10
 	},
 });
+function calculateMillisecondsRemaining(createdAt:string, duration:number) {
+	var currentTime = new Date().getTime(); // Get the current time in milliseconds
+	var futureTime = new Date(createdAt).getTime(); // Convert the createdAt string to a Date object and get the time in milliseconds
+	return futureTime+duration - currentTime
+  }
+  const getPrice = (item:any) => {
+	const duration = item.bookingSession.duration /  3_600_000;
+	const price = item.zone.fee;
+	return `${price*duration} JD`;
+}
+function formatDuration(duration:number) {
+	var hours = Math.floor(duration / 3600000);
+	var minutes = Math.floor((duration % 3600000) / 60000);
+  
+	var formattedDuration = "";
+	if (hours > 0) {
+	  formattedDuration += hours + "h ";
+	}
+	if (minutes > 0) {
+	  formattedDuration += minutes + " minutes";
+	}
+	
+	return formattedDuration;
+  }
+  

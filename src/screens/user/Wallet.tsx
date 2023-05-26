@@ -4,8 +4,11 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { useQuery } from "react-query";
+import { getWallet } from "../../api/customer";
+import LoadingScreen from "../LoadingScreen";
 
 const Wallet = () => {
+  const {data,isLoading,error} = useQuery("wallet",()=>getWallet())
 	const navigation = useNavigation<any>();
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -23,12 +26,14 @@ const Wallet = () => {
 			enabled: true,
 		}
 	); */
+  if(isLoading) return <LoadingScreen/>
+  if(error) return <Text>Something went wrong please try again later</Text>
 	return (
 		<CustomSafeAreaView>
 			<View style={styles.container}>
 				<View style={styles.cashBox}>
 					<Text style={styles.cash}>Cash</Text>
-					<Text style={styles.amount}>JOD 5.530</Text>
+					<Text style={styles.amount}>JOD {data.data.balance}</Text>
 				</View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>

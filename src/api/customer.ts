@@ -91,11 +91,67 @@ export const createBookingSession = async(request:CreateSessionRequest) :Promise
 	}
 }
 
-export const getLatestSession = async():Promise<any>=>{
+export const getLatestSession = async():Promise<WrapperApiResponse<any>>=>{
 	try {
 		const token = await getJwtToken();
 		if(!token) throw new Error("Token not found")
 		const resp = await globalAPi.get("/booking/current",{headers:{Authorization:`Bearer ${token}`}});
+		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+	} catch (error: any) {
+		console.log(error.response)
+		const statusCode = error.response.status;
+		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
+		return {
+			isSuccess: false,
+			statusCode: statusCode,
+			error: errorMessage,
+		};
+	}
+}
+
+
+export const getWallet = async():Promise<any>=>{
+	try {
+		const token = await getJwtToken();
+		if(!token) throw new Error("Token not found")
+		const resp = await globalAPi.get("/wallet",{headers:{Authorization:`Bearer ${token}`}});
+		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+	} catch (error: any) {
+		console.log(error.response)
+		const statusCode = error.response.status;
+		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
+		return {
+			isSuccess: false,
+			statusCode: statusCode,
+			error: errorMessage,
+		};
+	}
+}
+
+export const chargeWallet = async(amount:number):Promise<WrapperApiResponse<any>>=>{
+	try {
+		const token = await getJwtToken();
+		if(!token) throw new Error("Token not found")
+		const resp = await globalAPi.patch("/wallet/charge",{amountToCharge:amount},{headers:{Authorization:`Bearer ${token}`}});
+		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+	} catch (error: any) {
+		console.log(error.response)
+		const statusCode = error.response.status;
+		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
+		return {
+			isSuccess: false,
+			statusCode: statusCode,
+			error: errorMessage,
+		};
+	}
+}
+
+export const getBookingHistory = async() :Promise<WrapperApiResponse<any>>=>{
+	try {
+		const token = await getJwtToken();
+		console.log(token)
+		if(!token) throw new Error("Token not found")
+		const resp = await globalAPi.get("/booking/history",{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
 		console.log(error.response)

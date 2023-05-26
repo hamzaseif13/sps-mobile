@@ -10,6 +10,7 @@ export interface Zone{
     availableSpaces:number
     startsAt:string
     endsAt:string
+    spaceList:Space[]
 }
 
 export interface Space{

@@ -16,6 +16,7 @@ import ScanQR from "../screens/user/ScanQR";
 import RedeemCard from "../screens/user/RedeemCard";
 import SelectCar from "../screens/user/SelectCar";
 import Cars from "../screens/user/Cars";
+import ExtendSession from "../screens/user/ExtendSession";
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -66,6 +67,7 @@ const StackNav = () => {
 			<stack.Screen name="History" component={History} />
 			<stack.Screen name="Confirm" component={ConfirmSession} />
 			<stack.Screen name="ScanQR" component={ScanQR} />
+			<stack.Screen name="Extend" component={ExtendSession} />
 			<stack.Screen
 				name="Redeem"
 				options={{ headerTitle: "Redeem Cards" }}
