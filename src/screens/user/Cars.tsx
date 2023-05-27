@@ -1,4 +1,4 @@
-import { Button, ScrollView, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, TouchableOpacity, View,RefreshControl } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useAppContext } from "../../context/AppContext";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 const Cars = () => {
 	const navigation = useNavigation();
 
-	const { data, isLoading, error } = useQuery("cars", () => getCustomerCars());
+	const { data, isLoading, error,isRefetching,refetch } = useQuery("cars", () => getCustomerCars());
 	const cars = data?.data;
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -19,7 +19,10 @@ const Cars = () => {
     },[])
 	return (
 		<CustomSafeAreaView>
-			<ScrollView style={styles.container}>
+			<ScrollView
+				style={styles.container}
+				refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+			>
 				<Text style={{ fontSize: 30, fontWeight: "bold" }}>Your Cars</Text>
 				{cars?.reverse().map((car) => (
 					<View key={car.id} style={styles.car} >

@@ -8,6 +8,7 @@ import Countdown from "react-countdown";
 import { useQuery } from "react-query";
 import { getLatestSession } from "../../api/customer";
 import { useNavigation } from "@react-navigation/native";
+import { getPrice } from "../../screens/user/History";
 const RecentSession = () => {
 	const { data, isLoading } = useQuery("recent-session", () => getLatestSession());
 	const navigation = useNavigation<any>();
@@ -69,7 +70,7 @@ const RecentSession = () => {
 				{bookingSession.state === "ACTIVE" &&<Button
 					buttonColor="#4169e1"
 					mode="contained"
-					onPress={() => navigation.navigate("Extend")}
+					onPress={() => navigation.navigate("Extend",data.data)}
 				>
 					<Text>Extend</Text>
 				</Button>}
@@ -105,17 +106,13 @@ const styles = StyleSheet.create({
 		alignItems: "center",marginTop:10
 	},
 });
-function calculateMillisecondsRemaining(createdAt:string, duration:number) {
+export function calculateMillisecondsRemaining(createdAt:string, duration:number) {
 	var currentTime = new Date().getTime(); // Get the current time in milliseconds
 	var futureTime = new Date(createdAt).getTime(); // Convert the createdAt string to a Date object and get the time in milliseconds
 	return futureTime+duration - currentTime
   }
-  const getPrice = (item:any) => {
-	const duration = item.bookingSession.duration /  3_600_000;
-	const price = item.zone.fee;
-	return `${price*duration} JD`;
-}
-function formatDuration(duration:number) {
+
+export function formatDuration(duration:number) {
 	var hours = Math.floor(duration / 3600000);
 	var minutes = Math.floor((duration % 3600000) / 60000);
   

@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView,ScrollView,RefreshControl } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
@@ -8,7 +8,7 @@ import { getWallet } from "../../api/customer";
 import LoadingScreen from "../LoadingScreen";
 
 const Wallet = () => {
-  const {data,isLoading,error} = useQuery("wallet",()=>getWallet())
+  const {data,isLoading,error,refetch,isRefetching} = useQuery("wallet",()=>getWallet())
 	const navigation = useNavigation<any>();
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -30,10 +30,13 @@ const Wallet = () => {
   if(error) return <Text>Something went wrong please try again later</Text>
 	return (
 		<CustomSafeAreaView>
-			<View style={styles.container}>
+			<ScrollView
+				style={styles.container}
+				refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+			>
 				<View style={styles.cashBox}>
 					<Text style={styles.cash}>Cash</Text>
-					<Text style={styles.amount}>JOD {data.data.balance}</Text>
+					<Text style={styles.amount}>JOD {data.data.balance.toFixed(3).padStart(4, "0")}</Text>
 				</View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
@@ -63,7 +66,7 @@ const Wallet = () => {
             </TouchableOpacity>
           </View>
         </View>
-			</View>
+			</ScrollView>
 		</CustomSafeAreaView>
 	);
 };

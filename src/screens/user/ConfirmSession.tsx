@@ -86,7 +86,7 @@ const ConfirmSession = () => {
 			clientQuery.refetchQueries("wallet")
 			clientQuery.refetchQueries("history")
 			clientQuery.refetchQueries("recent-session")
-			setTimeout(()=>{navigation.goBack()},700)
+			setTimeout(()=>{navigation.navigate("Home2")},700)
 		}
 		else{
 			Toast.show({

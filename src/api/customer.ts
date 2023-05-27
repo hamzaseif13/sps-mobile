@@ -164,3 +164,40 @@ export const getBookingHistory = async() :Promise<WrapperApiResponse<any>>=>{
 		};
 	}
 }
+
+export const validateSpaceNumber = async({zoneId,spaceNumber}:{zoneId:number,spaceNumber:number}) :Promise<WrapperApiResponse<{isAvailable:boolean,message:string}>>=>{
+	try {
+		const token = await getJwtToken();
+		if(!token) throw new Error("Token not found")
+		const resp = await globalAPi.get("/booking/history",{headers:{Authorization:`Bearer ${token}`}});
+		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+	} catch (error: any) {
+		console.log(error.response)
+		const statusCode = error.response.status;
+		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
+		return {
+			isSuccess: false,
+			statusCode: statusCode,
+			error: errorMessage,
+		};
+	}
+}
+
+export const extendBookingSession = async({zoneId,durationInMs,sessionId}:{zoneId:number,durationInMs:number,sessionId:number}) :Promise<WrapperApiResponse<any>>=>{
+	try {
+		console.log("im here",{zoneId,durationInMs,sessionId})
+		const token = await getJwtToken();
+		if(!token) throw new Error("Token not found")
+		const resp = await globalAPi.patch(`/booking/${sessionId}/extend`,{zoneId,durationInMs},{headers:{Authorization:`Bearer ${token}`}});
+		return { isSuccess: true, data: {}, statusCode: resp.status };
+	} catch (error: any) {
+		console.log(error.response)
+		const statusCode = error.response.status;
+		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
+		return {
+			isSuccess: false,
+			statusCode: statusCode,
+			error: errorMessage,
+		};
+	}
+}
