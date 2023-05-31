@@ -13,7 +13,6 @@ export const registerCustomer = async (
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
 		const statusCode = error.response.status;
-		console.log(error.response.data)
 		const errorMessage = error.response.data.messages[0];
 		return {
 			isSuccess: false,
@@ -28,8 +27,6 @@ export const getAllZones = async (): Promise<WrapperApiResponse<Array<Zone>>> =>
 		const resp = await globalAPi.get("/zone");
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response.data)
-
 		const statusCode = error.response.status;
 		return {
 			isSuccess: false,
@@ -42,7 +39,6 @@ export const getAllZones = async (): Promise<WrapperApiResponse<Array<Zone>>> =>
 export const getCustomerCars = async (): Promise<WrapperApiResponse<Array<Car>>> => {
 	try {
 		const token = await getJwtToken();
-		console.log("🚀 ~ file: customer.ts:42 ~ getCustomerCars ~ token:", token)
 		if(!token) throw new Error("Token not found")
 		const resp = await globalAPi.get("/car",{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
@@ -63,7 +59,6 @@ export const registerNewCarr = async (request: CreateCarRequest): Promise<Wrappe
 		const resp = await globalAPi.post("/car",request,{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response.data)
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
 		return {
@@ -80,7 +75,6 @@ export const createBookingSession = async(request:CreateSessionRequest) :Promise
 		const resp = await globalAPi.post("/booking",request,{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response)
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
 		return {
@@ -98,7 +92,6 @@ export const getLatestSession = async():Promise<WrapperApiResponse<any>>=>{
 		const resp = await globalAPi.get("/booking/current",{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response)
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
 		return {
@@ -117,7 +110,6 @@ export const getWallet = async():Promise<any>=>{
 		const resp = await globalAPi.get("/wallet",{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response)
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
 		return {
@@ -135,7 +127,6 @@ export const chargeWallet = async(amount:number):Promise<WrapperApiResponse<any>
 		const resp = await globalAPi.patch("/wallet/charge",{amountToCharge:amount},{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response)
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
 		return {
@@ -149,12 +140,10 @@ export const chargeWallet = async(amount:number):Promise<WrapperApiResponse<any>
 export const getBookingHistory = async() :Promise<WrapperApiResponse<any>>=>{
 	try {
 		const token = await getJwtToken();
-		console.log(token)
 		if(!token) throw new Error("Token not found")
 		const resp = await globalAPi.get("/booking/history",{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response)
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
 		return {
@@ -169,10 +158,9 @@ export const validateSpaceNumber = async({zoneId,spaceNumber}:{zoneId:number,spa
 	try {
 		const token = await getJwtToken();
 		if(!token) throw new Error("Token not found")
-		const resp = await globalAPi.get("/booking/history",{headers:{Authorization:`Bearer ${token}`}});
+		const resp = await globalAPi.post("/space/check",{zoneId,spaceNumber},{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response)
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
 		return {
@@ -185,13 +173,11 @@ export const validateSpaceNumber = async({zoneId,spaceNumber}:{zoneId:number,spa
 
 export const extendBookingSession = async({zoneId,durationInMs,sessionId}:{zoneId:number,durationInMs:number,sessionId:number}) :Promise<WrapperApiResponse<any>>=>{
 	try {
-		console.log("im here",{zoneId,durationInMs,sessionId})
 		const token = await getJwtToken();
 		if(!token) throw new Error("Token not found")
 		const resp = await globalAPi.patch(`/booking/${sessionId}/extend`,{zoneId,durationInMs},{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: {}, statusCode: resp.status };
 	} catch (error: any) {
-		console.log(error.response)
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
 		return {

@@ -23,8 +23,8 @@ const History = () => {
 				{data?.statusCode === 204 ? (
 					<Text>History is empty</Text>
 				) : (
-					data?.data
-						.sort((a: any, b: any) => {
+					data?.data?.length>0 &&
+					data?.data?.sort((a: any, b: any) => {
 							return (
 								new Date(b.bookingSession.createdAt).getTime() -
 								new Date(a.bookingSession.createdAt).getTime()

@@ -13,7 +13,11 @@ import { Dropdown } from "react-native-element-dropdown";
 import { CreateSessionRequest } from "../../interface/Booking";
 import { createBookingSession } from "../../api/customer";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import * as Notifications from "expo-notifications";
+import useNotifications from "../../hooks/useNotifications";
 const ConfirmSession = () => {
+	const notify = useNotifications();
+
 	const navigation = useNavigation<any>();
 	const route = useRoute();
 	const [zoneId, setZoneId] = useState("");
@@ -22,7 +26,7 @@ const ConfirmSession = () => {
 	const [hours, setHours] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 	const [visible, setVisible] = React.useState(false);
-	const clientQuery = useQueryClient()
+	const clientQuery = useQueryClient();
 	const openMenu = () => setVisible(true);
 
 	const closeMenu = () => setVisible(false);
@@ -37,14 +41,13 @@ const ConfirmSession = () => {
 		});
 	}, [navigation]);
 
-	const { data, isLoading, refetch } = useQuery(
+	const { data, isLoading, refetch,error } = useQuery(
 		["zone", route.params?.toString().split("-")[0]],
 		(queryKey) => getZoneById(queryKey.queryKey[1]!),
 		{
 			enabled: true,
 		}
 	);
-		console.log(data?.data)
 
 	useEffect(() => {
 		const [zoneIdQr, spaceNumberQr] = route.params?.toString().split("-")!;
@@ -54,14 +57,18 @@ const ConfirmSession = () => {
 		}
 	}, [route.params]);
 
-	const { mutateAsync: createBoookingSessionAsync, isLoading:isCreatingSession } = useMutation(
+	const { mutateAsync: createBoookingSessionAsync, isLoading: isCreatingSession } = useMutation(
 		(request: CreateSessionRequest) => createBookingSession(request),
 		{ mutationKey: "booking" }
 	);
 
-
 	if (isLoading) return <LoadingScreen />;
-	if (!data?.isSuccess) return <Text>Something Went wrong please try again later</Text>;
+	if (!data?.isSuccess) {
+		if(data?.statusCode===404)
+		return <Text>The QR code you scanned is not a valid one, please try again.</Text>;
+		return <Text>Something Went wrong please try again later</Text>;
+
+	}
 	const zone = data.data;
 	const calculatePrice = () => {
 		return (hours + minutes / 60) * zone?.fee!;
@@ -74,31 +81,37 @@ const ConfirmSession = () => {
 			carId: Number(car!.id),
 			spaceNumber: Number(spaceNumber),
 			zoneId: zone!.id,
-			durationInMs: minutes*60_000 + hours*3_600_000,
+			durationInMs: minutes * 60_000 + hours * 3_600_000,
 		});
 		if (resp.isSuccess) {
 			Toast.show({
 				type: "success",
 				text1: "Success",
 				text2: "Session Created Successfully",
-			})
-			clientQuery.refetchQueries("zones")
-			clientQuery.refetchQueries("wallet")
-			clientQuery.refetchQueries("history")
-			clientQuery.refetchQueries("recent-session")
-			setTimeout(()=>{navigation.navigate("Home2")},700)
-		}
-		else{
+			});
+			clientQuery.refetchQueries("zones");
+			clientQuery.refetchQueries("wallet");
+			clientQuery.refetchQueries("history");
+			clientQuery.refetchQueries("recent-session");
+			setTimeout(() => {
+				navigation.navigate("Home2");
+			}, 700);
+			//10 * 60 + 0 * 60 * 60 - 5 * 60
+			notify(minutes*60+hours*60*60-5*60);
+		} else {
 			Toast.show({
 				type: "error",
 				text1: "Error",
 				text2: resp.error,
-			})
+			});
 		}
 	};
-	const getSpaceForDrop = ()=>{
-		return zone?.spaceList.filter((space)=>space.state==="AVAILABLE").sort((a,b)=>a.number-b.number).map((space)=>({label:space.number.toString(),value:space.number.toString()}))
-	}
+	const getSpaceForDrop = () => {
+		return zone?.spaceList
+			.filter((space) => space.state === "AVAILABLE")
+			.sort((a, b) => a.number - b.number)
+			.map((space) => ({ label: space.number.toString(), value: space.number.toString() }));
+	};
 	return (
 		<CustomSafeAreaView>
 			<View style={styles.container}>

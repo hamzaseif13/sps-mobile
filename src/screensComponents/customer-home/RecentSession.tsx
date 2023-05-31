@@ -3,7 +3,6 @@ import React from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Button } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
-import useTimer from "../../hooks/useTimer";
 import Countdown from "react-countdown";
 import { useQuery } from "react-query";
 import { getLatestSession } from "../../api/customer";
@@ -26,11 +25,10 @@ const RecentSession = () => {
 				<Text>No Session Found</Text>
 			</View>
 		);
-	console.log(bookingSession);
 	return (
 		<View style={styles.container}>
 			<View style={styles.idk}>
-				<Text style={styles.text}>Current Session</Text>
+				<Text style={styles.text}>{bookingSession.state === "ACTIVE" ? "Current booking" : "Last booking"} </Text>
 				<Text>{zone.tag}</Text>
 			</View>
 			<MapView

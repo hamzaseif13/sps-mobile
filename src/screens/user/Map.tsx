@@ -88,7 +88,6 @@ const Map = () => {
 	return (
 		<View style={styles.container}>
 			<StatusBar backgroundColor="#003f5c" barStyle="light-content" />
-			<MapSearchBar />
 			<MapView
 				onPress={() => setZone(null)}
 				ref={mapRef}
@@ -128,8 +127,11 @@ const Map = () => {
 					</Marker>
 				))}
 			</MapView>
-			<TouchableOpacity onPress={animateToCurrent} style={styles.currentLocation}>
-				<MaterialIcons name="location-searching" size={24} color="black" />
+			<TouchableOpacity onPress={()=>navigation.navigate("ScanQR")} style={[styles.floating,{top:20}]}>
+				<MaterialIcons name="qr-code" size={30} color="black" />
+			</TouchableOpacity>
+			<TouchableOpacity onPress={animateToCurrent} style={[styles.floating,{top:90}]}>
+				<MaterialIcons name="location-searching" size={30} color="black" />
 			</TouchableOpacity>
 			{zone && (
 				<View style={[styles.floatingSection]}>
@@ -234,17 +236,16 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 		backgroundColor: "#4169e1",
 	},
-	currentLocation: {
+	floating: {
 		position: "absolute",
-		top: 100,
 		backgroundColor: "white",
-		width: 50,
-		height: 50,
+		width: 60,
+		height: 60,
 		borderRadius: 100,
 		justifyContent: "center",
 		alignItems: "center",
 		borderWidth: 1,
 		borderColor: "lightgrey",
-		right: 4,
+		right: 10,
 	},
 });

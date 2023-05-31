@@ -1,9 +1,14 @@
 import React, { useLayoutEffect } from "react";
-import { View, Text, Button, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Touchable, TouchableOpacity,Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppContext } from '../../context/AppContext';
 import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from "expo-secure-store";
+import { useState, useEffect, useRef } from 'react';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import useNotifications from "../../hooks/useNotifications";
+
 const ProfilePage = () => {
   const {setUser} = useAppContext()
   const navigation = useNavigation<any>();
@@ -20,6 +25,9 @@ const ProfilePage = () => {
 		await SecureStore.deleteItemAsync("user");
 		setUser(null);
 	};
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.section}>
@@ -43,6 +51,7 @@ const ProfilePage = () => {
         </TouchableOpacity>
         {/* Add your logout content here */}
       </View>
+     
     </View>
   );
 };

@@ -5,6 +5,8 @@ import { ActivityIndicator, Button } from "react-native-paper";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import LoadingScreen from "../LoadingScreen";
 import { useNavigation } from "@react-navigation/native";
+import { useMutation } from "react-query";
+import { validateSpaceNumber } from "../../api/customer";
 const ScanQR = () => {
 	const [hasPermission, setHasPermission] = useState<boolean>(false);
 	const [scanned, setScanned] = useState(false);
@@ -19,6 +21,7 @@ const ScanQR = () => {
 		getBarCodeScannerPermissions();
 	}, []);
 
+	const {mutateAsync,isLoading } = useMutation("validate-qr",(req:any)=>validateSpaceNumber(req))
 	if (hasPermission === false) {
 		return (
 			<View style={{ margin: 20 }}>
@@ -53,7 +56,7 @@ const ScanQR = () => {
 		<CustomSafeAreaView>
 			<View style={{ marginHorizontal: 20, flex: 1, alignItems: "center" }}>
 				<BarCodeScanner onBarCodeScanned={handleBarCodeScanned} style={styles.camera} />
-				<Text>hi</Text>
+				<Text style={{marginTop:20}}>Scan the QR code located in the parking space.</Text>
 			</View>
 		</CustomSafeAreaView>
 	);

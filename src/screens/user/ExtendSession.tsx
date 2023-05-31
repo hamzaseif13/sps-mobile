@@ -36,7 +36,7 @@ const ExtendSession = ({ route }: any) => {
 			Toast.show({
 				type: "error",
 				text1: "Error",
-				text2: "Something went wrong please try again later",
+				text2: resp.error,
 			})
 		}
 	};
