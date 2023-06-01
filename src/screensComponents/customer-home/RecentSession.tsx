@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Button } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
@@ -8,8 +8,12 @@ import { useQuery } from "react-query";
 import { getLatestSession } from "../../api/customer";
 import { useNavigation } from "@react-navigation/native";
 import { getPrice } from "../../screens/user/History";
+import { useAppContext } from "../../context/AppContext";
 const RecentSession = () => {
-	const { data, isLoading } = useQuery("recent-session", () => getLatestSession());
+	const { user } = useAppContext();
+	const { data, isLoading, refetch } = useQuery("recent-session", () => getLatestSession(), {
+		enabled: true,
+	});
 	const navigation = useNavigation<any>();
 	const bookingSession = data?.data?.bookingSession;
 	const zone = data?.data?.zone;
@@ -28,7 +32,9 @@ const RecentSession = () => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.idk}>
-				<Text style={styles.text}>{bookingSession.state === "ACTIVE" ? "Current booking" : "Last booking"} </Text>
+				<Text style={styles.text}>
+					{bookingSession.state === "ACTIVE" ? "Current booking" : "Last booking"}{" "}
+				</Text>
 				<Text>{zone.tag}</Text>
 			</View>
 			<MapView
@@ -52,7 +58,10 @@ const RecentSession = () => {
 					<Text>{zone.title}</Text>
 					{bookingSession.state === "ACTIVE" && (
 						<Countdown
-							date={Date.now() + calculateMillisecondsRemaining(bookingSession.createdAt, bookingSession.duration)}
+							date={
+								Date.now() +
+								calculateMillisecondsRemaining(bookingSession.createdAt, bookingSession.duration)
+							}
 							renderer={({ hours, minutes, seconds, completed }) => (
 								<Text>
 									Time Left : {hours.toString().padStart(2, "0")}:
@@ -61,18 +70,21 @@ const RecentSession = () => {
 							)}
 						/>
 					)}
-					{
-						bookingSession.state !== "ACTIVE" && <Text>Price : {getPrice(data?.data)}  {formatDuration(bookingSession.duration)} </Text>
-					}
+					{bookingSession.state !== "ACTIVE" && (
+						<Text>
+							Price : {getPrice(data?.data)} {formatDuration(bookingSession.duration)}{" "}
+						</Text>
+					)}
 				</View>
-				{bookingSession.state === "ACTIVE" &&<Button
-					buttonColor="#4169e1"
-					mode="contained"
-					onPress={() => navigation.navigate("Extend",data.data)}
-				>
-					<Text>Extend</Text>
-				</Button>}
-			
+				{bookingSession.state === "ACTIVE" && (
+					<Button
+						buttonColor="#4169e1"
+						mode="contained"
+						onPress={() => navigation.navigate("Extend", data.data)}
+					>
+						<Text>Extend</Text>
+					</Button>
+				)}
 			</View>
 		</View>
 	);
@@ -101,27 +113,27 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		marginVertical: 5,
-		alignItems: "center",marginTop:10
+		alignItems: "center",
+		marginTop: 10,
 	},
 });
-export function calculateMillisecondsRemaining(createdAt:string, duration:number) {
+export function calculateMillisecondsRemaining(createdAt: string, duration: number) {
 	var currentTime = new Date().getTime(); // Get the current time in milliseconds
 	var futureTime = new Date(createdAt).getTime(); // Convert the createdAt string to a Date object and get the time in milliseconds
-	return futureTime+duration - currentTime
-  }
+	return futureTime + duration - currentTime;
+}
 
-export function formatDuration(duration:number) {
+export function formatDuration(duration: number) {
 	var hours = Math.floor(duration / 3600000);
 	var minutes = Math.floor((duration % 3600000) / 60000);
-  
+
 	var formattedDuration = "";
 	if (hours > 0) {
-	  formattedDuration += hours + "h ";
+		formattedDuration += hours + "h ";
 	}
 	if (minutes > 0) {
-	  formattedDuration += minutes + " minutes";
+		formattedDuration += minutes + " minutes";
 	}
-	
+
 	return formattedDuration;
-  }
-  
+}

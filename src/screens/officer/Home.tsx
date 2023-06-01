@@ -11,6 +11,7 @@ import RecentSession from "../../screensComponents/customer-home/RecentSession";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TodaySchedule from "../../screensComponents/officer-home/TodaySchedule";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { getJwtToken } from "../../helpers";
 
 const Home = () => {
 	const navigation = useNavigation<any>();
@@ -18,12 +19,10 @@ const Home = () => {
 		navigation.setOptions({
 			headerShown: false,
 		});
-	}, []);
-	const { user, setUser } = useAppContext();
-	const logout = async () => {
-		await SecureStore.deleteItemAsync("user");
-		setUser(null);
-	};
+		 getJwtToken().then(token=>console.log(token))
+		}, []);
+		const { user, setUser } = useAppContext();
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={{ flex: -1 }}>

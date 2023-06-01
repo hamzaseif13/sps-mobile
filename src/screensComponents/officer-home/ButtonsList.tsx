@@ -19,7 +19,7 @@ const ButtonsList = () => {
 				<MaterialIcons name="access-time" size={60} color="#4169e1" />
 			</HomeButton>
 
-			<HomeButton title="History" target="History">
+			<HomeButton title="Your reports" target="History">
 				<MaterialIcons name="history" size={60} color="#4169e1" />
 			</HomeButton>
 		</View>

@@ -59,7 +59,7 @@ const ExtendSession = ({ route }: any) => {
 					</View>
 				</View>
 				
-				<View>
+				<View style={{marginBottom:20}}>
 					<Countdown
 						date={
 							Date.now() +

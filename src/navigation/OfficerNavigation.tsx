@@ -9,6 +9,9 @@ import History from "../screens/officer/History";
 import Schedule from "../screens/officer/Schedule";
 import ProfilePage from "../screens/officer/Profile";
 import Report from "../screens/officer/Report";
+import ZoneDetails from "../screens/officer/ZoneDetails";
+import Zones from "../screens/officer/Zones";
+import SpaceDetails from "../screens/officer/SpaceDetails";
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -19,13 +22,13 @@ const CustomerNavigation = () => {
 			<Tab.Navigator
 				screenOptions={({ route }) => ({
 					tabBarIcon: ({ focused, color, size }) => {
-						let iconName: "home" | "time" | "person" = "home";
+						let iconName: "home" | "location-outline" | "person" = "home";
 						switch (route.name) {
 							case "Home":
 								iconName = "home";
 								break;
-							case "Schedule":
-								iconName = "time";
+							case "Zones":
+								iconName = "location-outline";
 								break;
 							case "Profile":
 								iconName = "person";
@@ -43,7 +46,7 @@ const CustomerNavigation = () => {
 				})}
 			>
 				<Tab.Screen name="Home" options={{ headerShown: false }} component={StackNav} />
-				<Tab.Screen name="Schedule" component={Schedule} />
+				<Tab.Screen name="Zones" component={Zones} />
 				<Tab.Screen name="Profile" component={ProfilePage} />
 			</Tab.Navigator>
 		</>
@@ -55,8 +58,10 @@ const StackNav = () => {
 		<stack.Navigator>
 			<stack.Screen name="Home2" component={Home} />
 			<stack.Screen name="Map" options={{ headerShown: false }} component={Map} />
-			<stack.Screen name="Report" options={{ headerShown: false }} component={Report} />
+			<stack.Screen name="Report"  component={Report} />
 			<stack.Screen name="History" options={{ headerShown: false }} component={History} />
+			<stack.Screen name="ZoneDetails"  component={ZoneDetails} />
+			<stack.Screen name="SpaceDetails"  component={SpaceDetails} />
 		</stack.Navigator>
 	);
 };
