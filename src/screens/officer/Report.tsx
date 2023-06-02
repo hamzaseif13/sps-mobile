@@ -22,9 +22,9 @@ import { Dropdown } from "react-native-element-dropdown";
 import { Zone } from "../../interface/Zone";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
-const Report = () => {
+const Report = ({route}:any) => {
 	const [selectedImage, setSelectedImage] = useState<ImagePicker.ImagePickerAsset>();
-	const [selectedZone, setSelectedZone] = useState<string>();
+	const [selectedZone, setSelectedZone] = useState<string>(route.params);
 	const {
 		control,
 		handleSubmit,

@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 	},
 	container: {
-		marginTop: 150,
-		flex: -1,
+		marginTop: 20,
+		flex: 1,
 		paddingBottom: 100,
 	},
 	tagHeader: {

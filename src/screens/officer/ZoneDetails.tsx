@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity,ScrollView } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ScheduleZone, Zone } from "../../interface/Zone";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { convertTimeFormat } from "../../screensComponents/officer-home/TodaySchedule";
-import { Card } from "react-native-paper";
+import { Button, Card } from "react-native-paper";
 
 const ZoneDetails = ({ route }: any) => {
 	const navigation = useNavigation<any>();
@@ -20,17 +20,17 @@ const ZoneDetails = ({ route }: any) => {
 		}
 		return zone.address;
 	};
-	const getSpaces = ()=>{
-		if("spaces" in zone){
-			return zone.spaces.sort((a,b)=>a.number-b.number)
+	const getSpaces = () => {
+		if ("spaces" in zone) {
+			return zone.spaces.sort((a, b) => a.number - b.number);
 		}
-		return zone.spaceList.sort((a,b)=>a.number-b.number);
-	}
+		return zone.spaceList.sort((a, b) => a.number - b.number);
+	};
 
 	return (
 		<CustomSafeAreaView>
 			<View style={styles.container}>
-				<Text style={{ fontWeight: "bold", fontSize: 27 }}>{getAddress()}</Text>
+				<Text style={{ fontWeight: "bold", fontSize: 27, textAlign: "left" }}>{getAddress()}</Text>
 				<View
 					style={{
 						flexDirection: "row",
@@ -47,27 +47,41 @@ const ZoneDetails = ({ route }: any) => {
 					</Text>
 				</View>
 				<View
-					style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" ,marginBottom:20}}
+					style={{
+						flexDirection: "row",
+						justifyContent: "space-between",
+						alignItems: "center",
+						marginBottom: 20,
+					}}
 				>
 					<Text style={{ fontSize: 20, marginVertical: 10 }}>
 						Total spaces : {zone.numberOfSpaces}
 					</Text>
 					<Text style={{ fontSize: 20, marginVertical: 10 }}>Fees : {zone.fee}/hour JD</Text>
 				</View>
-				{/* <View style={styles.spaces}>
-						<SpaceCard/>
-						<SpaceCard/>
-						<SpaceCard/>
-				</View> */}
-
-				<ScrollView >
+				<Button
+					mode="contained"
+					style={{ borderRadius: 10, marginBottom: 20 }}
+					buttonColor="#4169e1"
+					onPress={() => navigation.navigate("Report", zone.id)}
+				>
+					Report violation
+				</Button>
+				<ScrollView>
 					<View style={styles.container2}>
-
-					{getSpaces().map((space,index) => (
-						<TouchableOpacity disabled={space.state==="AVAILABLE"} onPress={()=>navigation.navigate("SpaceDetails",space.id)} key={index} style={[styles.card,{backgroundColor:space.state==="AVAILABLE" ? "#77DD77":"red"}]}>
-							<Text style={styles.cardText}>{space.number}</Text>
-						</TouchableOpacity>
-					))}
+						{getSpaces().map((space, index) => (
+							<TouchableOpacity
+								disabled={space.state === "AVAILABLE"}
+								onPress={() => navigation.navigate("SpaceDetails", space.id)}
+								key={index}
+								style={[
+									styles.card,
+									{ backgroundColor: space.state === "AVAILABLE" ? "#77DD77" : "red" },
+								]}
+							>
+								<Text style={styles.cardText}>{space.number}</Text>
+							</TouchableOpacity>
+						))}
 					</View>
 				</ScrollView>
 			</View>
@@ -118,7 +132,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		flexDirection: "row",
 		flexWrap: "wrap",
-		justifyContent: "space-between",
+		justifyContent: "space-between",paddingBottom:30
 	},
 	card: {
 		width: "48%",
