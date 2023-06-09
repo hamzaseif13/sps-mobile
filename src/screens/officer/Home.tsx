@@ -19,9 +19,9 @@ const Home = () => {
 		navigation.setOptions({
 			headerShown: false,
 		});
-		 getJwtToken().then(token=>console.log(token))
-		}, []);
-		const { user, setUser } = useAppContext();
+		getJwtToken().then((token) => console.log(token));
+	}, []);
+	const { user, setUser } = useAppContext();
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 20,
 		paddingTop: 20,
-		flex: 1
+		flex: 1,
 	},
 });
 export default Home;

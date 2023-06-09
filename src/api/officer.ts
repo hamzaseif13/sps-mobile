@@ -6,6 +6,7 @@ import { globalAPi } from "./api";
 export const getOfficerSchedule = async (): Promise<WrapperApiResponse<OfficerSchedule>> => {
 	try {
 		const token = await getJwtToken();
+		console.log("🚀 ~ file: officer.ts:9 ~ getOfficerSchedule ~ token:", token)
 		if (!token) throw new Error("Token not found");
 		const resp = await globalAPi.get("schedule/logged_in", {
 			headers: { Authorization: `Bearer ${token}` },

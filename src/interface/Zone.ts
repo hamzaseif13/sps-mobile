@@ -23,6 +23,7 @@ export interface OfficerSchedule {
 	startsAt: string;
 	endsAt: string;
 	zones: Array<ScheduleZone>;
+	daysOfWeek: Array<string>;
 }
 export interface ScheduleZone {
 	id: number;

@@ -5,7 +5,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { TextInput, Button, Snackbar } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { API_URL } from "../config";
 import { loginUser } from "../api/auth";
 import { useAppContext } from "../context/AppContext";
@@ -17,11 +17,12 @@ const Login = () => {
 	const onToggleSnackBar = () => setVisible(!visible);
 	const onDismissSnackBar = () => setVisible(false);
 	const { setUser } = useAppContext();
+	const queryClient= useQueryClient()
 	const {
 		control,
 		formState: { errors },
 		handleSubmit,
-		getValues,
+		getValues,setValue
 	} = useForm();
 	const navigation = useNavigation<any>();
 
@@ -33,6 +34,7 @@ const Login = () => {
 			setLoginMessage("Login Successful");
 			setUser(res.data);
 			await SecureStore.setItemAsync("user",JSON.stringify(res.data));
+			queryClient.invalidateQueries("recent-session");
 		} else {
 			onToggleSnackBar();
 			setLoginMessage(res.error!);
@@ -50,6 +52,10 @@ const Login = () => {
 			headerShown: false,
 		});
 	}, []);
+	const fastLogin = ()=>{
+		setValue("email","hamza@hamza.com")
+		setValue("password","12345678")
+	}
 	return (
 		<CustomSafeAreaView>
 			<Snackbar visible={visible} onDismiss={onDismissSnackBar}>
@@ -120,6 +126,15 @@ const Login = () => {
 				mode="contained"
 			>
 				Log in
+			</Button>
+			<Button
+				disabled={isLoading}
+				loading={isLoading}
+				style={styles.button}
+				onPress={fastLogin}
+				mode="contained"
+			>
+				fast login
 			</Button>
 		</CustomSafeAreaView>
 	);

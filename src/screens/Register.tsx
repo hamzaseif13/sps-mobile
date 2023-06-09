@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import { TextInput, Button, Snackbar } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { registerCustomer } from "../api/customer";
 import { useAppContext } from "../context/AppContext";
 import * as SecureStore from "expo-secure-store";
@@ -24,6 +24,7 @@ const Register = () => {
 	const onDismissSnackBar = () => setVisible(false);
 	const { setUser } = useAppContext();
 	const [passwordError, setPasswordError] = React.useState<string>();
+	const queryClient = useQueryClient();
 	const {
 		control,
 		handleSubmit,
@@ -60,6 +61,7 @@ const Register = () => {
 			setUser(res.data!);
 			setRegisterMessage("Register Successful");
 			await SecureStore.setItemAsync("user",JSON.stringify(res.data))
+			queryClient.invalidateQueries("recent-session");
 		} else {
 			onToggleSnackBar();
 			setRegisterMessage(res.error!);

@@ -1,4 +1,4 @@
-import { Linking, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Linking, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { getOfficerSchedule } from "../../api/officer";
@@ -6,27 +6,60 @@ import { useNavigation } from "@react-navigation/native";
 import ZoneCard from "./ZoneCard";
 import { useAppContext } from "../../context/AppContext";
 const TodaySchedule = () => {
-	const {user} = useAppContext()
-	const { data, isLoading, error,refetch } = useQuery("officerSchedule", () => getOfficerSchedule());
+	const { user } = useAppContext();
+	const { data, isLoading, error, refetch, isRefetching } = useQuery("officerSchedule", () =>
+		getOfficerSchedule()
+	,{enabled:false});
 	const navigation = useNavigation<any>();
 
-	
-	if (isLoading) return <Text>Loading...</Text>;
-	const { zones, endsAt, startsAt } = data?.data!;
+	if (isLoading) {
+		console.log(isLoading)
+	}
+	useEffect(()=>{
+		setTimeout(refetch,500)
+	},[])
 	return (
 		<View style={styles.container}>
-			<Text style={{ fontWeight: "bold", fontSize: 20 }}>TodaySchedule</Text>
-			<Text style={{ marginTop: 10, fontSize: 20 }}>
-				{convertTimeFormat(startsAt)} - {convertTimeFormat(endsAt)}
-			</Text>
-			<ScrollView style={{ gap: 10, marginTop: 10, paddingBottom: 100 }}>
-				{zones.length > 0 &&
-					zones.map((zone, index) => {
-						return (
-							<ZoneCard  zone={zone} key={index}/>
-						);
-					})}
-			</ScrollView>
+			{data?.data && (
+				<>
+					<View
+						style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}
+					>
+						<Text style={{ fontWeight: "bold", fontSize: 20 }}>TodaySchedule</Text>
+						<Text style={{ fontSize: 15 }}>
+							{convertTimeFormat(data.data.startsAt)} - {convertTimeFormat(data.data.endsAt)}
+						</Text>
+					</View>
+					<View style={{ flexDirection: "row", columnGap: 10, flexWrap: "wrap" }}>
+						{data.data.daysOfWeek.map((day, index) => {
+							return (
+								<Text
+									key={index}
+									style={{
+										marginTop: 10,
+										fontSize: 20,
+										backgroundColor: "#e0e0e0",
+										padding: 5,
+										borderRadius: 10,
+									}}
+								>
+									{day.toLowerCase()}
+								</Text>
+							);
+						})}
+					</View>
+					<ScrollView
+						style={{ gap: 10, marginTop: 10, paddingBottom: 100 }}
+						refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+					>
+						{data.data.zones &&
+							data.data.zones.length > 0 &&
+							data.data.zones.map((zone, index) => {
+								return <ZoneCard zone={zone} key={index} />;
+							})}
+					</ScrollView>
+				</>
+			)}
 		</View>
 	);
 };

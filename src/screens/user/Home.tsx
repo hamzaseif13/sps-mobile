@@ -10,12 +10,14 @@ import * as SecureStore from "expo-secure-store";
 import RecentSession from "../../screensComponents/customer-home/RecentSession";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Map from "./Map";
+import { getJwtToken } from "../../helpers";
 const Home = () => {
 	const navigation = useNavigation<any>();
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerShown: false,
 		});
+		getJwtToken().then((token) => console.log(token));
 	}, []);
 	const {user,setUser} = useAppContext();
 	const logout = async () => {

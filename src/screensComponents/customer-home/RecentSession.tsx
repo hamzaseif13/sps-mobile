@@ -11,19 +11,18 @@ import { getPrice } from "../../screens/user/History";
 import { useAppContext } from "../../context/AppContext";
 const RecentSession = () => {
 	const { user } = useAppContext();
-	const { data, isLoading, refetch } = useQuery("recent-session", () => getLatestSession(), {
-		enabled: true,
-	});
+	const { data, isLoading, refetch } = useQuery("recent-session", () => getLatestSession(), {});
 	const navigation = useNavigation<any>();
-	const bookingSession = data?.data?.bookingSession;
 	const zone = data?.data?.zone;
+	const bookingSession = data?.data?.bookingSession;
 	if (isLoading)
 		return (
 			<View style={styles.container}>
 				<Text>Loading...</Text>
 			</View>
 		);
-	if (!bookingSession)
+
+	if (!data?.data?.bookingSession)
 		return (
 			<View style={styles.container}>
 				<Text>No Session Found</Text>
@@ -31,61 +30,68 @@ const RecentSession = () => {
 		);
 	return (
 		<View style={styles.container}>
-			<View style={styles.idk}>
-				<Text style={styles.text}>
-					{bookingSession.state === "ACTIVE" ? "Current booking" : "Last booking"}{" "}
-				</Text>
-				<Text>{zone.tag}</Text>
-			</View>
-			<MapView
-				style={styles.map}
-				provider={PROVIDER_GOOGLE}
-				initialRegion={{
-					latitude: zone.lat,
-					longitude: zone.lng,
-					latitudeDelta: 0.015,
-					longitudeDelta: 0.0121,
-				}}
-			>
-				<Marker
-					coordinate={{ latitude: zone.lat, longitude: zone.lng }}
-					title="Marker Title"
-					description="Marker Description"
-				/>
-			</MapView>
-			<View style={styles.idk}>
-				<View style={{ display: "flex", gap: 4 }}>
-					<Text>{zone.title}</Text>
-					{bookingSession.state === "ACTIVE" && (
-						<Countdown
-							date={
-								Date.now() +
-								calculateMillisecondsRemaining(bookingSession.createdAt, bookingSession.duration)
-							}
-							renderer={({ hours, minutes, seconds, completed }) => (
+			{ !!data.data ? 
+				<>
+					<View style={styles.idk}>
+						<Text style={styles.text}>
+							{bookingSession.state === "ACTIVE" ? "Current booking" : "Last booking"}{" "}
+						</Text>
+						<Text>{zone.tag}</Text>
+					</View>
+					<MapView
+						style={styles.map}
+						provider={PROVIDER_GOOGLE}
+						initialRegion={{
+							latitude: zone.lat,
+							longitude: zone.lng,
+							latitudeDelta: 0.015,
+							longitudeDelta: 0.0121,
+						}}
+					>
+						<Marker
+							coordinate={{ latitude: zone.lat, longitude: zone.lng }}
+							title="Marker Title"
+							description="Marker Description"
+						/>
+					</MapView>
+					<View style={styles.idk}>
+						<View style={{ display: "flex", gap: 4 }}>
+							<Text>{zone.title}</Text>
+							{bookingSession && bookingSession.state === "ACTIVE" && (
+								<Countdown
+									date={
+										Date.now() +
+										calculateMillisecondsRemaining(
+											bookingSession.createdAt,
+											bookingSession.duration
+										)
+									}
+									renderer={({ hours, minutes, seconds, completed }) => (
+										<Text>
+											Time Left : {hours.toString().padStart(2, "0")}:
+											{minutes.toString().padStart(2, "0")}:{seconds.toString().padStart(2, "0")}{" "}
+										</Text>
+									)}
+								/>
+							)}
+							{bookingSession && bookingSession.state !== "ACTIVE" && (
 								<Text>
-									Time Left : {hours.toString().padStart(2, "0")}:
-									{minutes.toString().padStart(2, "0")}:{seconds.toString().padStart(2, "0")}{" "}
+									Price : {getPrice(data?.data)} {formatDuration(bookingSession.duration)}{" "}
 								</Text>
 							)}
-						/>
-					)}
-					{bookingSession.state !== "ACTIVE" && (
-						<Text>
-							Price : {getPrice(data?.data)} {formatDuration(bookingSession.duration)}{" "}
-						</Text>
-					)}
-				</View>
-				{bookingSession.state === "ACTIVE" && (
-					<Button
-						buttonColor="#4169e1"
-						mode="contained"
-						onPress={() => navigation.navigate("Extend", data.data)}
-					>
-						<Text>Extend</Text>
-					</Button>
-				)}
-			</View>
+						</View>
+						{bookingSession.state === "ACTIVE" && (
+							<Button
+								buttonColor="#4169e1"
+								mode="contained" disabled={bookingSession.extended===true}
+								onPress={() => navigation.navigate("Extend", data.data)}
+							>
+								<Text>Extend</Text>
+							</Button>
+						)}
+					</View>
+				</>
+			:<Text>No Session Found</Text>}
 		</View>
 	);
 };
