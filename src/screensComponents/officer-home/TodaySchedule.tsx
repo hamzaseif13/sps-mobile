@@ -1,4 +1,12 @@
-import { Linking, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+	ActivityIndicator,
+	Linking,
+	RefreshControl,
+	ScrollView,
+	StyleSheet,
+	Text,
+	View,
+} from "react-native";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { getOfficerSchedule } from "../../api/officer";
@@ -7,17 +15,12 @@ import ZoneCard from "./ZoneCard";
 import { useAppContext } from "../../context/AppContext";
 const TodaySchedule = () => {
 	const { user } = useAppContext();
-	const { data, isLoading, error, refetch, isRefetching } = useQuery("officerSchedule", () =>
-		getOfficerSchedule()
-	,{enabled:false});
-	const navigation = useNavigation<any>();
-
-	if (isLoading) {
-		console.log(isLoading)
-	}
-	useEffect(()=>{
-		setTimeout(refetch,500)
-	},[])
+	const { data, isLoading, error, refetch, isRefetching } = useQuery(
+		"officerSchedule",
+		() => getOfficerSchedule(),
+		{ enabled: true }
+	);
+	if(isLoading) return <ActivityIndicator style={{marginTop:20}} size="large" color="#4169e1" />
 	return (
 		<View style={styles.container}>
 			{data?.data && (

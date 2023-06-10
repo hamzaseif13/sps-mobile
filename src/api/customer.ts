@@ -9,6 +9,7 @@ export const registerCustomer = async (
 	request: RegisterCustomerRequest
 ): Promise<WrapperApiResponse<LoginResponse>> => {
 	try {
+		
 		const resp = await globalAPi.post("/customer", request);
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {
@@ -24,6 +25,8 @@ export const registerCustomer = async (
 
 export const getAllZones = async (): Promise<WrapperApiResponse<Array<Zone>>> => {
 	try {
+		const token = await getJwtToken();
+		globalAPi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 		const resp = await globalAPi.get("/zone");
 		return { isSuccess: true, data: resp.data, statusCode: resp.status };
 	} catch (error: any) {

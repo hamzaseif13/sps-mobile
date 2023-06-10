@@ -35,6 +35,8 @@ const Login = () => {
 			setUser(res.data);
 			await SecureStore.setItemAsync("user",JSON.stringify(res.data));
 			queryClient.invalidateQueries("recent-session");
+			queryClient.invalidateQueries("officerSchedule");
+			
 		} else {
 			onToggleSnackBar();
 			setLoginMessage(res.error!);

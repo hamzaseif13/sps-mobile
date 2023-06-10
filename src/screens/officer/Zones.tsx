@@ -4,6 +4,7 @@ import CustomSafeAreaView from '../../components/CustomSafeAreaView'
 import { useQuery } from "react-query";
 import { getAllZones } from "../../api/customer";
 import ZoneCard from "../../screensComponents/officer-home/ZoneCard";
+import LoadingScreen from "../LoadingScreen";
 
 const Zones = () => {
   const { data, isLoading: zonesLoading,refetch ,isRefetching} = useQuery({
@@ -12,6 +13,9 @@ const Zones = () => {
 		enabled: true,
 	});
   const zones = data?.data || [];
+  if(zonesLoading){
+    return <LoadingScreen/>
+  }
   return (
     
   <CustomSafeAreaView>
