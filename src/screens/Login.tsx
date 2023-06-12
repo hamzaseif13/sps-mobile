@@ -54,6 +54,11 @@ const Login = () => {
 			headerShown: false,
 		});
 	}, []);
+	const fastLogin = ()=>{
+		setValue("email","hamza@hamza.com")
+		setValue("password","12345678")
+		handleSubmit(signIn)()
+	}
 	return (
 		<CustomSafeAreaView>
 			<Snackbar visible={visible} onDismiss={onDismissSnackBar}>
@@ -121,6 +126,15 @@ const Login = () => {
 				loading={isLoading}
 				style={styles.button}
 				onPress={handleSubmit(signIn)}
+				mode="contained"
+			>
+				Log in
+			</Button>
+			<Button
+				disabled={isLoading}
+				loading={isLoading}
+				style={styles.button}
+				onPress={fastLogin}
 				mode="contained"
 			>
 				Log in

@@ -20,10 +20,6 @@ const Home = () => {
 		getJwtToken().then((token) => console.log(token));
 	}, []);
 	const {user,setUser} = useAppContext();
-	const logout = async () => {
-		await SecureStore.deleteItemAsync("user");
-		setUser(null);
-	};
 	return (
 		<CustomSafeAreaView>
 			<View style={styles.container}>

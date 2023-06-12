@@ -20,16 +20,11 @@ const ConfirmSession = () => {
 
 	const navigation = useNavigation<any>();
 	const route = useRoute();
-	const [zoneId, setZoneId] = useState("");
 	const [spaceNumber, setSpaceNumber] = useState<string>();
 	const { car, setCar } = useAppContext();
 	const [hours, setHours] = useState(0);
 	const [minutes, setMinutes] = useState(0);
-	const [visible, setVisible] = React.useState(false);
 	const clientQuery = useQueryClient();
-	const openMenu = () => setVisible(true);
-
-	const closeMenu = () => setVisible(false);
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -40,10 +35,9 @@ const ConfirmSession = () => {
 			},
 		});
 	}, [navigation]);
-
 	const { data, isLoading, refetch,error } = useQuery(
 		["zone", route.params?.toString().split("-")[0]],
-		(queryKey) => getZoneById(queryKey.queryKey[1]!),
+		(queryKey) => getZoneById(route.params?.toString().split("-")[0]!),
 		{
 			enabled: true,
 		}
@@ -51,7 +45,6 @@ const ConfirmSession = () => {
 
 	useEffect(() => {
 		const [zoneIdQr, spaceNumberQr] = route.params?.toString().split("-")!;
-		refetch({ queryKey: ["zone", zoneIdQr] });
 		if (spaceNumberQr) {
 			setSpaceNumber(spaceNumberQr);
 		}
@@ -70,6 +63,7 @@ const ConfirmSession = () => {
 
 	}
 	const zone = data.data;
+
 	const calculatePrice = () => {
 		return (hours + minutes / 60) * zone?.fee!;
 	};

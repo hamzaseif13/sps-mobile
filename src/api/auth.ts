@@ -11,7 +11,7 @@ export const loginUser = async (
 			email,
 			password,
 		});
-		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+		return { isSuccess: true, data: resp.data, statusCode: 200 };
 	} catch (error: any) {
 		const statusCode = error.response.status;
 		const errorMessage = statusCode >= 500 ? "Something Went Wrong, Please Try Again Later" : "Invalid Credentials";

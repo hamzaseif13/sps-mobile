@@ -11,7 +11,7 @@ export const registerCustomer = async (
 	try {
 		
 		const resp = await globalAPi.post("/customer", request);
-		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+		return { isSuccess: true, data: resp.data, statusCode: 200};
 	} catch (error: any) {
 		const statusCode = error.response.status;
 		const errorMessage = error.response.data.messages[0];
@@ -28,7 +28,7 @@ export const getAllZones = async (): Promise<WrapperApiResponse<Array<Zone>>> =>
 		const token = await getJwtToken();
 		globalAPi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 		const resp = await globalAPi.get("/zone");
-		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+		return { isSuccess: true, data: resp.data, statusCode:200};
 	} catch (error: any) {
 		const statusCode = error.response.status;
 		return {
@@ -44,7 +44,7 @@ export const getCustomerCars = async (): Promise<WrapperApiResponse<Array<Car>>>
 		const token = await getJwtToken();
 		if(!token) throw new Error("Token not found")
 		const resp = await globalAPi.get("/car",{headers:{Authorization:`Bearer ${token}`}});
-		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+		return { isSuccess: true, data: resp.data, statusCode:200 };
 	} catch (error: any) {
 		const statusCode = error.response.status;
 		return {
@@ -60,7 +60,7 @@ export const registerNewCarr = async (request: CreateCarRequest): Promise<Wrappe
 		const token = await getJwtToken();
 		if(!token) throw new Error("Token not found")
 		const resp = await globalAPi.post("/car",request,{headers:{Authorization:`Bearer ${token}`}});
-		return { isSuccess: true, data: resp.data, statusCode: resp.status };
+		return { isSuccess: true, data: resp.data, statusCode:200 };
 	} catch (error: any) {
 		const statusCode = error.response.status;
 		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
@@ -91,17 +91,15 @@ export const createBookingSession = async(request:CreateSessionRequest) :Promise
 export const getLatestSession = async():Promise<WrapperApiResponse<any>>=>{
 	try {
 		const token = await getJwtToken();
-		console.log("🚀 ~ file: customer.ts:91 ~ getLatestSession ~ token:", token)
 		if(!token) throw new Error("Token not found")
 		const resp = await globalAPi.get("/booking/current",{headers:{Authorization:`Bearer ${token}`}});
 		return { isSuccess: true, data: resp.data, statusCode: 200};
 	} catch (error: any) {
-		const statusCode = error.response.status;
-		const errorMessage  = statusCode <500 ? error.response.data.messages[0] : "Something went wrong"
+	
 		return {
 			isSuccess: false,
-			statusCode: statusCode,
-			error: errorMessage,
+			statusCode: 500,
+			error: "something went wrong",
 		};
 	}
 }
