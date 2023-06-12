@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StatusBar, StyleSheet, Text, View } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
@@ -22,6 +22,7 @@ const Home = () => {
 	const {user,setUser} = useAppContext();
 	return (
 		<CustomSafeAreaView>
+			
 			<View style={styles.container}>
 			
 				<HomeHeader firstName={user?.firstName!} secondName={user?.lastName!} profilePicture="skd" />
@@ -35,7 +36,6 @@ const Home = () => {
 const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 20,
-		paddingTop: 20,
 	},
 });
 export default Home;

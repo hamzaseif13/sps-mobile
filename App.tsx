@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import React from "react";
 import AppContext from "./src/context/AppContext";
 import NavigationProvider from "./src/navigation/NavigationProvider";
@@ -43,6 +43,7 @@ const queryClient = new QueryClient({defaultOptions:{
 const App = () => {
 	return (
 		<NavigationContainer>
+			<StatusBar backgroundColor={"#4169e1"}/>
 			<QueryClientProvider client={queryClient}>
 				<AppContext>
 					<NavigationProvider />

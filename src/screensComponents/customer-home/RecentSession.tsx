@@ -38,7 +38,7 @@ const RecentSession = () => {
 						</Text>
 						<Text>{zone.tag}</Text>
 					</View>
-					<MapView
+					{/* <MapView
 						style={styles.map}
 						provider={PROVIDER_GOOGLE}
 						initialRegion={{
@@ -53,7 +53,7 @@ const RecentSession = () => {
 							title="Marker Title"
 							description="Marker Description"
 						/>
-					</MapView>
+					</MapView> */}
 					<View style={styles.idk}>
 						<View style={{ display: "flex", gap: 4 }}>
 							<Text>{zone.title}</Text>
