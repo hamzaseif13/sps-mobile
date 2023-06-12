@@ -1,5 +1,13 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
+    ],
     "name": "sps-mobile",
     "slug": "sps-mobile",
     "version": "1.0.0",
@@ -21,14 +29,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.hamzaseif.spsmobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra":{
-      "apiUrl": "http://localhost:8080"
+    "extra": {
+      "apiUrl": "http://localhost:8080",
+      "eas": {
+        "projectId": "c681a523-543c-43d3-870b-952b896a78ae"
+      }
     }
-  
   }
 }

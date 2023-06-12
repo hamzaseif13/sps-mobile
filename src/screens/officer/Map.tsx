@@ -14,7 +14,6 @@ import { getAllZones } from "../../api/customer";
 import { Zone } from "../../interface/Zone";
 
 import ParkingMarker from "../../screensComponents/customer-map/ParkingMarker";
-import { Button } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 const LAT_DELTA = 0.015;
 const LONG_DELTA = 0.0121;
