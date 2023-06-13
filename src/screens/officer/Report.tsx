@@ -67,6 +67,7 @@ const Report = ({route}:any) => {
 				text1: "Report submitted successfully",
 				position: "top",
 			});
+			setTimeout(()=>{navigation.navigate("Home2")},1000)
 		} else {
 			Toast.show({
 				type: "error",

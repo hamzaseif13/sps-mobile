@@ -31,7 +31,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.hamzaseif.spsmobile"
+      "package": "com.hamzaseif.spsmobile",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAupYyWahXTKCmrYYoGmnooVQRTkuwCCkI"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

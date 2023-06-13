@@ -138,7 +138,7 @@ const Map = () => {
 					<View style={styles.header}>
 						<View>
 							<Text style={styles.header}>{zone.title}</Text>
-							<Text>{zone.address}</Text>
+							<Text style={{maxWidth:"80%"}}>{zone.address}</Text>
 						</View>
 						<Text style={styles.tagHeader}>
 							{zone.tag.split("-")[0]}-<Text style={styles.tagBody}>{zone.tag.split("-")[1]}</Text>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
 		height: 200,
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
-		padding: 20,
+		paddingHorizontal:20,
 		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 3 },
 		shadowOpacity: 0.2,

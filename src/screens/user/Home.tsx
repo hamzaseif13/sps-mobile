@@ -17,7 +17,6 @@ const Home = () => {
 		navigation.setOptions({
 			headerShown: false,
 		});
-		getJwtToken().then((token) => console.log(token));
 	}, []);
 	const {user,setUser} = useAppContext();
 	return (

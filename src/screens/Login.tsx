@@ -130,15 +130,6 @@ const Login = () => {
 			>
 				Log in
 			</Button>
-			<Button
-				disabled={isLoading}
-				loading={isLoading}
-				style={styles.button}
-				onPress={fastLogin}
-				mode="contained"
-			>
-				Log in
-			</Button>
 		</CustomSafeAreaView>
 	);
 };
