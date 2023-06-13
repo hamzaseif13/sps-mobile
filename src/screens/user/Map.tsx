@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-	Platform,
 	Text,
 	View,
 	StyleSheet,
 	StatusBar,
 	Alert,
-	TouchableHighlight,
 	TouchableOpacity,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import CustomSafeAreaView from "../../components/CustomSafeAreaView";
-import MapSearchBar from "../../screensComponents/customer-map/MapSearchBar";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "react-query";

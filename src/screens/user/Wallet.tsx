@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView,ScrollView,RefreshControl } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity,ScrollView,RefreshControl } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";

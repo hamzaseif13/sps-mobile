@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ScheduleZone, Zone } from "../../interface/Zone";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { convertTimeFormat } from "../../screensComponents/officer-home/TodaySchedule";
-import { Button, Card } from "react-native-paper";
+import { Button } from "react-native-paper";
 
 const ZoneDetails = ({ route }: any) => {
 	const navigation = useNavigation<any>();

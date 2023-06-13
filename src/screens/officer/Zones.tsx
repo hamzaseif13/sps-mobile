@@ -1,4 +1,4 @@
-import { Linking, ScrollView, StyleSheet, Text, View,RefreshControl } from "react-native";
+import { ScrollView, StyleSheet,RefreshControl } from "react-native";
 import React from 'react'
 import CustomSafeAreaView from '../../components/CustomSafeAreaView'
 import { useQuery } from "react-query";

@@ -10,7 +10,6 @@ import {
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { getOfficerSchedule } from "../../api/officer";
-import { useNavigation } from "@react-navigation/native";
 import ZoneCard from "./ZoneCard";
 import { useAppContext } from "../../context/AppContext";
 const TodaySchedule = () => {

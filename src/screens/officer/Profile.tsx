@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { View, Text, Button, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet,  TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppContext } from '../../context/AppContext';
 import { useNavigation } from '@react-navigation/native';

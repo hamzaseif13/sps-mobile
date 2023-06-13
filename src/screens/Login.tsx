@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Keyboard, View, ToastAndroid, Alert } from "react-native";
+import { StyleSheet, Text, Keyboard, View } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -6,7 +6,6 @@ import { TextInput, Button, Snackbar } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import { useMutation, useQueryClient } from "react-query";
-import { API_URL } from "../config";
 import { loginUser } from "../api/auth";
 import { useAppContext } from "../context/AppContext";
 import * as SecureStore from "expo-secure-store";

@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { Button } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
 import Countdown from "react-countdown";
 import { useQuery } from "react-query";
 import { getLatestSession } from "../../api/customer";

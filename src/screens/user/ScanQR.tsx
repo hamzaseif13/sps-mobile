@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Vibration } from "react-native";
 import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { Button } from "react-native-paper";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import LoadingScreen from "../LoadingScreen";
 import { useNavigation } from "@react-navigation/native";

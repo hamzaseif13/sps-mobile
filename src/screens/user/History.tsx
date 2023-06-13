@@ -4,7 +4,6 @@ import { useQuery } from "react-query";
 import LoadingScreen from "../LoadingScreen";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { getBookingHistory } from "../../api/customer";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const History = () => {
 	const { isLoading, data, error, isRefetching, refetch } = useQuery("history", () =>

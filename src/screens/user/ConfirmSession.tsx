@@ -5,15 +5,13 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getZoneById } from "../../api/common";
 import LoadingScreen from "../LoadingScreen";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
-import { Button, TextInput, Menu, Divider, Provider } from "react-native-paper";
-import { Feather } from "@expo/vector-icons";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Button } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
 import { useAppContext } from "../../context/AppContext";
 import { Dropdown } from "react-native-element-dropdown";
 import { CreateSessionRequest } from "../../interface/Booking";
 import { createBookingSession } from "../../api/customer";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import * as Notifications from "expo-notifications";
 import useNotifications from "../../hooks/useNotifications";
 const ConfirmSession = () => {
 	const notify = useNotifications();
